@@ -1,0 +1,27 @@
+# inspect_stack.py
+import inspect
+import pprint
+
+
+def show_stack():
+    for level in inspect.stack():
+        print('{}[{}]\n  -> {}'.format(
+            level.frame.f_code.co_filename,
+            level.lineno,
+            level.code_context[level.index].strip(),
+        ))
+        pprint.pprint(level.frame.f_locals)
+        print()
+
+
+def recurse_s(limit):
+    local_variable = '.' * limit
+    if limit <= 0:
+        show_stack()
+        return
+    recurse_s(limit - 1)
+    return local_variable
+
+
+if __name__ == '__main__':
+    recurse_s(2)
